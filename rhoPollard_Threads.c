@@ -11,9 +11,9 @@
 
 #include "set.h"
 
-#define N 9
+#define N 15
 #define SIZE_DISTINGUE 253
-#define N_THREADS 10
+#define N_THREADS 5
 
 #define INIT(name, value) \
   mpz_init(name);         \
@@ -123,18 +123,18 @@ int main() {
   sharedStruct.set = NULL;
   /* génerateur g de G */
   INIT(sharedStruct.g,
-       "14363598898034523295652595226451218173822047640895822226567298614992367"
-       "146553")
+       "39446785437698040340461597167197039958900119517854788257122347157448791"
+       "324269")
   /* h tel que l'on cherche log_g(h) */
   INIT(sharedStruct.h,
-       "55545317370952104492125424247052801398868586854091463200129497585802970"
-       "222823")
+       "47009043480611367617830675310337741057970676588266669887302467688270735"
+       "539171")
   /* l'ordre du grand groupe */
   INIT(sharedStruct.p,
-       "61542140278442124778881991994246734900297133114232860324388953964578904"
-       "997889")
+       "68526471339746042131712464873602124202388714266226208884158671408493995"
+       "491329")
   /* ordre du sous-groupe G */
-  INIT(sharedStruct.q, "584377562233")
+  INIT(sharedStruct.q, "166578624252013")
 
   PRINT2(sharedStruct.h)
   PRINT2(sharedStruct.p)
@@ -166,6 +166,12 @@ int main() {
   mpz_clear(h_init);
   gmp_randclear(state);
   /**/
+
+  /* INIT collision*/
+  mpz_init(sharedStruct.collision_1.n);
+  mpz_init(sharedStruct.collision_2.n);
+  mpz_init(sharedStruct.collision_1.m);
+  mpz_init(sharedStruct.collision_2.m);
 
   /* creation de 2 thread qui calcul des points distingué */
   pthread_t tid[N_THREADS];                         /* thread identifiers */
