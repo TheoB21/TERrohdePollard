@@ -12,7 +12,7 @@
 #include "set.h"
 
 #define SIZE_P 256
-#define N 10
+#define N 24
 #define SIZE_DISTINGUE 239
 // en moyenne on stock (cst*sqrt(q))/2^x élement dans ta la table ou
 //(x= Nb de bit de p -size distingué)
@@ -23,7 +23,7 @@
 // theta des résultat
 #define N_THREADS 20
 #define I_THETA \
-  (1 << (SIZE_P - SIZE_DISTINGUE))  // Nb de bit de p -size distingué
+  (1 << (SIZE_P - SIZE_DISTINGUE)) // Nb de bit de p -size distingué
 
 #define INIT(name, value) \
   mpz_init(name);         \
@@ -33,7 +33,8 @@
   mpz_out_str(stdout, 10, var); \
   printf("\n");
 
-typedef struct {
+typedef struct
+{
   mpz_t m; /*exposant de  g*/
   mpz_t n; /*exposant de  h*/
 } couple;
@@ -43,7 +44,8 @@ typedef struct {
 int cpt = 0;
 
 /* the struct shared by all threads*/
-typedef struct {
+typedef struct
+{
   node *set;                   /*Ensemble ou les thread mettent les éléments*/
   couple collision_1;          /* element 1 de la collision */
   couple collision_2;          /* element 2 de la collision */
@@ -60,7 +62,8 @@ typedef struct {
 } thread_struct;
 
 void f(mpz_t *y, mpz_t *a, mpz_t *b, mpz_t *g, mpz_t *h, mpz_t *q, mpz_t *p,
-       couple *listExposant, mpz_t *listM) {
+       couple *listExposant, mpz_t *listM)
+{
   /* on génère une partition de l'ensemble en N cas */
   unsigned long int s = mpz_fdiv_ui(*y, N);
   mpz_add(*b, *b, listExposant[s].n);
@@ -71,7 +74,8 @@ void f(mpz_t *y, mpz_t *a, mpz_t *b, mpz_t *g, mpz_t *h, mpz_t *q, mpz_t *p,
   mpz_mod(*y, *y, *p);
 }
 
-void *f_dinstingue(thread_struct *s_struct) {
+void *f_dinstingue(thread_struct *s_struct)
+{
   /* INIT */
   mpz_t y, a, b, n1, m1, tmp1, tmp2;
   mpz_t *listExposant, listM;
@@ -96,17 +100,21 @@ start:
   mpz_set(a, m1);
   mpz_set(b, n1);
 
-  for (int i = 0; i < borne; i++) {
+  for (int i = 0; i < borne; i++)
+  {
     /*faire un pas avec la fonction f */
     f(&y, &a, &b, &(s_struct->g), &(s_struct->h), &(s_struct->q),
       &(s_struct->p), s_struct->listExposant, s_struct->listM);
     // printf("SIZE OF THE POINT : %d \n here is Y :", mpz_sizeinbase(y, 2));
     // PRINT2(y)
-    if (mpz_sizeinbase(y, 2) <= SIZE_DISTINGUE) {
+    if (mpz_sizeinbase(y, 2) <= SIZE_DISTINGUE)
+    {
       pthread_mutex_lock(&s_struct->lock_set);
       node_Tmp = search(s_struct->set, y);
-      if (node_Tmp != NULL) {
-        if (mpz_cmp(b, node_Tmp->n) == 0) {
+      if (node_Tmp != NULL)
+      {
+        if (mpz_cmp(b, node_Tmp->n) == 0)
+        {
           pthread_mutex_unlock(&s_struct->lock_set);
           goto start;
         }
@@ -130,124 +138,178 @@ start:
   return NULL;
 }
 
-int main() {
-  thread_struct sharedStruct; /* shared struct */
-  sharedStruct.set = NULL;
-  /* génerateur g de G */
-  INIT(sharedStruct.g,
-       "72155633141450052309748953323530902429595560703956909859169107243296984"
-       "133687")
-  /* h tel que l'on cherche log_g(h) */
-  INIT(sharedStruct.h,
-       "26744287274822396490924651441209042857155002812345329789408121166197214"
-       "484921")
-  /* l'ordre du grand groupe */
-  INIT(sharedStruct.p,
-       "77456470146854491836302861311232734130109573889911249617720968645873550"
-       "491649")
-  /* ordre du sous-groupe G */
-  INIT(sharedStruct.q, "771220475348913493")
+int main(int argc, char *argv[])
+{
 
-  PRINT2(sharedStruct.h)
-  PRINT2(sharedStruct.p)
-  PRINT2(sharedStruct.q)
+  bool echec = false;
+  FILE *in = fopen("input.txt", "r");
+  FILE *out = fopen("output.txt", "w"); // w->a permet de re ecrire a la fin du fichier
 
-  /* generation des ms et ns de façon aléatoire */
-
-  gmp_randstate_t state;
-  gmp_randinit_mt(state);
-  mpz_t g_init;
-  mpz_t h_init;
-  INIT(g_init, "0")
-  INIT(h_init, "0")
-
-  for (int i = 0; i < N; i++) {
-    mpz_init(sharedStruct.listExposant[i].m);
-    mpz_urandomm(sharedStruct.listExposant[i].m, state,
-                 sharedStruct.q); /* defined mod q */
-    mpz_init(sharedStruct.listExposant[i].n);
-    mpz_urandomm(sharedStruct.listExposant[i].n, state, sharedStruct.q);
-    mpz_powm(g_init, sharedStruct.g, sharedStruct.listExposant[i].m,
-             sharedStruct.p);
-    mpz_powm(h_init, sharedStruct.h, sharedStruct.listExposant[i].n,
-             sharedStruct.p);
-    mpz_init(sharedStruct.listM[i]);
-    mpz_mul(sharedStruct.listM[i], g_init, h_init);
+  if (in == NULL)
+  {
+    printf("Error open file IN\n");
+    fclose(out);
+    exit(EXIT_FAILURE);
   }
-  mpz_clear(g_init);
-  mpz_clear(h_init);
-  gmp_randclear(state);
-  /**/
+  if (out == NULL)
+  {
+    printf("Error open file OUT\n");
+    fclose(in);
+    exit(EXIT_FAILURE);
+  }
+  char temp_g[10000];
+  char temp_h[10000];
+  char temp_p[10000];
+  char temp_q[10000];
 
-  /* INIT collision*/
-  mpz_init(sharedStruct.collision_1.n);
-  mpz_init(sharedStruct.collision_2.n);
-  mpz_init(sharedStruct.collision_1.m);
-  mpz_init(sharedStruct.collision_2.m);
+  //while (!feof(in))
+  //{
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
 
-  /* creation de 2 thread qui calcul des points distingué */
-  pthread_t tid[N_THREADS];                         /* thread identifiers */
-  pthread_mutex_init(&sharedStruct.lock_set, NULL); /* mutex lock for set */
-  /* the main thread waits on this variable to shut down everything
-  (has to be linked with a mutex) */
-  pthread_mutex_init(&sharedStruct.lock_signal, NULL);
-  pthread_cond_init(&sharedStruct.signalFinish, NULL);
-  /*locking the threads while creating them*/
-  pthread_mutex_lock(&sharedStruct.lock_signal);
-  pthread_mutex_lock(&sharedStruct.lock_set);
+    fscanf(in, "%s %s %s %s", &temp_g, &temp_h, &temp_p, &temp_q);
 
-  for (int i = 0; i < N_THREADS; i++) {
-    if (pthread_create(&tid[i], NULL, f_dinstingue, &sharedStruct) != 0) {
-      fprintf(stderr, "Unable to create thread number : %d\n", i);
-      exit(EXIT_FAILURE);
+    thread_struct sharedStruct; /* shared struct */
+    sharedStruct.set = NULL;
+    /* génerateur g de G */
+    INIT(sharedStruct.g, temp_g)
+    /* h tel que l'on cherche log_g(h) */
+    INIT(sharedStruct.h, temp_h)
+    /* l'ordre du grand groupe */
+    INIT(sharedStruct.p, temp_p)
+    /* ordre du sous-groupe G */
+    INIT(sharedStruct.q, temp_q)
+
+    PRINT2(sharedStruct.h)
+    PRINT2(sharedStruct.p)
+    PRINT2(sharedStruct.q)
+
+    /* generation des ms et ns de façon aléatoire */
+    gmp_randstate_t state;
+    gmp_randinit_mt(state);
+    mpz_t g_init;
+    mpz_t h_init;
+    INIT(g_init, "0")
+    INIT(h_init, "0")
+
+    for (int i = 0; i < N; i++)
+    {
+      printf("test1\n");
+      mpz_init(sharedStruct.listExposant[i].m);
+      mpz_urandomm(sharedStruct.listExposant[i].m, state,
+                   sharedStruct.q); /* defined mod q */
+      mpz_init(sharedStruct.listExposant[i].n);
+      mpz_urandomm(sharedStruct.listExposant[i].n, state, sharedStruct.q);
+      mpz_powm(g_init, sharedStruct.g, sharedStruct.listExposant[i].m,
+               sharedStruct.p);
+      mpz_powm(h_init, sharedStruct.h, sharedStruct.listExposant[i].n,
+               sharedStruct.p);
+      mpz_init(sharedStruct.listM[i]);
+      mpz_mul(sharedStruct.listM[i], g_init, h_init);
     }
-  }
+    
+    mpz_clear(g_init);
+    mpz_clear(h_init);
+    gmp_randclear(state);
+    /**/
+    
+    /* INIT collision*/
+    mpz_init(sharedStruct.collision_1.n);
+    mpz_init(sharedStruct.collision_2.n);
+    mpz_init(sharedStruct.collision_1.m);
+    mpz_init(sharedStruct.collision_2.m);
+    
+    /* creation de 2 thread qui calcul des points distingué */
+    pthread_t tid[N_THREADS];                         /* thread identifiers */
+    pthread_mutex_init(&sharedStruct.lock_set, NULL); /* mutex lock for set */
+    /* the main thread waits on this variable to shut down everything
+    (has to be linked with a mutex) */
+    pthread_mutex_init(&sharedStruct.lock_signal, NULL);
+    pthread_cond_init(&sharedStruct.signalFinish, NULL);
+    /*locking the threads while creating them*/
+    pthread_mutex_lock(&sharedStruct.lock_signal);
+    pthread_mutex_lock(&sharedStruct.lock_set);
 
-  pthread_mutex_unlock(&sharedStruct.lock_set);
-  pthread_cond_wait(&sharedStruct.signalFinish, &sharedStruct.lock_signal);
-  for (int i = 0; i < N_THREADS; i++) {
-    pthread_cancel(tid[i]);
-  }
 
-  printf("HEIGHT OF THE TREE : %d | NB OF ELEMENT ADDED : %d\n",
-         sharedStruct.set->height, cpt);
+    for (int i = 0; i < N_THREADS; i++)
+    {
+      
+      if (pthread_create(&tid[i], NULL, f_dinstingue, &sharedStruct) != 0)
+      {
+        fprintf(stderr, "Unable to create thread number : %d\n", i);
+        exit(EXIT_FAILURE);
+      }
+    }
+    
+    pthread_mutex_unlock(&sharedStruct.lock_set);
+    pthread_cond_wait(&sharedStruct.signalFinish, &sharedStruct.lock_signal);
+    for (int i = 0; i < N_THREADS; i++)
+    {
+      pthread_cancel(tid[i]);
+    }
 
-  /* Extraction du resultat , on veut : (a_even-a)(b-b_even)^(-1) (mod q)  */
-  mpz_t r;
-  mpz_init(r);
-  mpz_sub(r, sharedStruct.collision_1.n,
-          sharedStruct.collision_2.n); /* r = (b - b_even) (mod q) */
-  mpz_mod(r, r, sharedStruct.q);       /* r = (b - b_even) (mod q) */
+    printf("HEIGHT OF THE TREE : %d | NB OF ELEMENT ADDED : %d\n",
+           sharedStruct.set->height, cpt);
 
-  /* test si (b - b_even) est inversible (mod q) */
-  if (mpz_cmp_si(r, 0) == 0) {
-    printf("ECHEC \n");
-    goto end;
-  }
+    /* Extraction du resultat , on veut : (a_even-a)(b-b_even)^(-1) (mod q)  */
+    mpz_t r;
+    mpz_init(r);
+    mpz_sub(r, sharedStruct.collision_1.n,
+            sharedStruct.collision_2.n); /* r = (b - b_even) (mod q) */
+    mpz_mod(r, r, sharedStruct.q);       /* r = (b - b_even) (mod q) */
 
-  mpz_invert(r, r, sharedStruct.q); /* r= (b-b_even)^(-1) (mod q) */
-  mpz_sub(sharedStruct.collision_2.m, sharedStruct.collision_2.m,
-          sharedStruct.collision_1.m); /* a_even = a_even-a (mod q) */
-  mpz_mul(r, r, sharedStruct.collision_2.m);
-  mpz_mod(r, r, sharedStruct.q);
+    /* test si (b - b_even) est inversible (mod q) */
+    if (mpz_cmp_si(r, 0) == 0)
+    {
+      printf("ECHEC \n");
+      echec = true;
+      // goto end;
+    }
 
-  printf("r = ");
-  PRINT2(r)
+    if (!echec)
+    {
+      mpz_invert(r, r, sharedStruct.q); /* r= (b-b_even)^(-1) (mod q) */
+      mpz_sub(sharedStruct.collision_2.m, sharedStruct.collision_2.m,
+              sharedStruct.collision_1.m); /* a_even = a_even-a (mod q) */
+      mpz_mul(r, r, sharedStruct.collision_2.m);
+      mpz_mod(r, r, sharedStruct.q);
 
-  /* liberation de la mémoire */
+      printf("r = ");
+      PRINT2(r)
 
-  mpz_clear(sharedStruct.g);
-  mpz_clear(sharedStruct.h);
-  mpz_clear(sharedStruct.p);
-  mpz_clear(sharedStruct.q);
-  deleteTree(sharedStruct.set);
+      /* liberation de la mémoire */
 
-end:
-  for (int i = 0; i < N; i++) {
-    mpz_clear(sharedStruct.listExposant[i].m);
-    mpz_clear(sharedStruct.listExposant[i].n);
-    mpz_clear(sharedStruct.listM[i]);
-  }
+      mpz_clear(sharedStruct.g);
+      mpz_clear(sharedStruct.h);
+      mpz_clear(sharedStruct.p);
+      mpz_clear(sharedStruct.q);
+      deleteTree(sharedStruct.set);
+      for (int i = 0; i < N; i++)
+      {
+        mpz_clear(sharedStruct.listExposant[i].m);
+        mpz_clear(sharedStruct.listExposant[i].n);
+        mpz_clear(sharedStruct.listM[i]);
+      }
+    }
+    else
+    {
+      for (int i = 0; i < N; i++)
+      {
+        mpz_clear(sharedStruct.listExposant[i].m);
+        mpz_clear(sharedStruct.listExposant[i].n);
+        mpz_clear(sharedStruct.listM[i]);
+      }
+    }
 
+    gettimeofday(&end, NULL);
+    long int temps = ((end.tv_sec * 1000000 + end.tv_usec) -
+                      (start.tv_sec * 1000000 + start.tv_usec));
+
+    float vrai_temps = (float)temps / 1000000;
+    printf("temps = %f\n", vrai_temps);
+    fprintf(out, "%f\n", temps);
+  //}
+  fclose(in);
+  fclose(out);
   return EXIT_SUCCESS;
 }
