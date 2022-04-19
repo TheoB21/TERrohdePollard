@@ -118,7 +118,7 @@ start:
           pthread_mutex_unlock(&s_struct->lock_set);
           goto start;
         }
-        printf("FINISH\n");
+        //printf("FINISH\n");
         mpz_set(s_struct->collision_1.m, a);
         mpz_set(s_struct->collision_1.n, b);
         mpz_set(s_struct->collision_2.n, node_Tmp->n);
@@ -126,7 +126,7 @@ start:
         pthread_mutex_lock(&s_struct->lock_signal);
         pthread_cond_broadcast(&s_struct->signalFinish);
         pthread_mutex_unlock(&s_struct->lock_signal);
-        printf("CONDITION SIGNALED \n");
+        //printf("CONDITION SIGNALED \n");
         return NULL;
       }
       s_struct->set = insert(s_struct->set, y, b, a);
@@ -143,20 +143,14 @@ int main(int argc, char *argv[])
 
   bool echec = false;
   FILE *in = fopen("input.txt", "r");
-  FILE *out = fopen("output.txt", "w"); // w->a permet de re ecrire a la fin du fichier
+ 
 
   if (in == NULL)
   {
     printf("Error open file IN\n");
-    fclose(out);
     exit(EXIT_FAILURE);
   }
-  if (out == NULL)
-  {
-    printf("Error open file OUT\n");
-    fclose(in);
-    exit(EXIT_FAILURE);
-  }
+
   char temp_g[10000];
   char temp_h[10000];
   char temp_p[10000];
@@ -164,8 +158,8 @@ int main(int argc, char *argv[])
 
   //while (!feof(in))
   //{
-    struct timeval start, end;
-    gettimeofday(&start, NULL);
+   /* struct timeval start, end;
+    gettimeofday(&start, NULL);*/
 
     fscanf(in, "%s %s %s %s", &temp_g, &temp_h, &temp_p, &temp_q);
 
@@ -180,9 +174,9 @@ int main(int argc, char *argv[])
     /* ordre du sous-groupe G */
     INIT(sharedStruct.q, temp_q)
 
-    PRINT2(sharedStruct.h)
-    PRINT2(sharedStruct.p)
-    PRINT2(sharedStruct.q)
+    //PRINT2(sharedStruct.h)
+    //PRINT2(sharedStruct.p)
+    //PRINT2(sharedStruct.q)
 
     /* generation des ms et ns de façon aléatoire */
     gmp_randstate_t state;
@@ -194,7 +188,6 @@ int main(int argc, char *argv[])
 
     for (int i = 0; i < N; i++)
     {
-      printf("test1\n");
       mpz_init(sharedStruct.listExposant[i].m);
       mpz_urandomm(sharedStruct.listExposant[i].m, state,
                    sharedStruct.q); /* defined mod q */
@@ -248,8 +241,8 @@ int main(int argc, char *argv[])
       pthread_cancel(tid[i]);
     }
 
-    printf("HEIGHT OF THE TREE : %d | NB OF ELEMENT ADDED : %d\n",
-           sharedStruct.set->height, cpt);
+    /*printf("HEIGHT OF THE TREE : %d | NB OF ELEMENT ADDED : %d\n",
+           sharedStruct.set->height, cpt);*/
 
     /* Extraction du resultat , on veut : (a_even-a)(b-b_even)^(-1) (mod q)  */
     mpz_t r;
@@ -274,8 +267,8 @@ int main(int argc, char *argv[])
       mpz_mul(r, r, sharedStruct.collision_2.m);
       mpz_mod(r, r, sharedStruct.q);
 
-      printf("r = ");
-      PRINT2(r)
+      //printf("r = ");
+      //PRINT2(r)
 
       /* liberation de la mémoire */
 
@@ -301,15 +294,14 @@ int main(int argc, char *argv[])
       }
     }
 
-    gettimeofday(&end, NULL);
+    /*gettimeofday(&end, NULL);
     long int temps = ((end.tv_sec * 1000000 + end.tv_usec) -
                       (start.tv_sec * 1000000 + start.tv_usec));
 
     float vrai_temps = (float)temps / 1000000;
     printf("temps = %f\n", vrai_temps);
-    fprintf(out, "%f\n", temps);
+    fprintf(out, "%f\n", temps);*/
   //}
   fclose(in);
-  fclose(out);
   return EXIT_SUCCESS;
 }

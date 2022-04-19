@@ -115,8 +115,22 @@ void f_r_adding_walk(mpz_t *Y, mpz_t *A, mpz_t *B, mpz_t *g, mpz_t *h, mpz_t *n,
 
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+  char temp_g[1000];
+  char temp_h[1000];
+  char temp_p[1000];
+  char temp_n[1000];
+
+    FILE* input = fopen("input.txt", "r+");
+
+    if(input == NULL){
+        printf("file is NULL\n");
+        exit(EXIT_FAILURE);
+    }
+
+    fscanf(input, "%s %s %s %s", &temp_g,&temp_h,&temp_p,&temp_n);
+ 
     // initialisation des entiers
     /*char gs[1024]; // generateur en entree en string
     char ns[1024]; // ordre en string
@@ -128,33 +142,35 @@ int main()
 
     //int flag;
 
+
     /*  printf("Entrez votre le generateur g :\n");
     scanf("%1023s", gs);
     printf("Entrez votre l'ordre n :\n"); //on passe les entrees
     scanf("%d", ns);
     printf("Entrez votre l'element h :\n");
     scanf("%1023s", hs);*/
-
+    
     mpz_init(g);
-    mpz_set_str(g, "39446785437698040340461597167197039958900119517854788257122347157448791324269",10);
+    //mpz_set_ui(g, tab[0]);
+   mpz_set_str(g, temp_g,10);
 
     mpz_init(h); // on initialise les entiers a 0
     //mpz_set_ui(h, 228);
-    mpz_set_str(h, "47009043480611367617830675310337741057970676588266669887302467688270735539171", 10);
-
+    mpz_set_str(h, temp_h, 10);
+    //mpz_set_ui(h, tab[1]);
     mpz_init(p);
-    mpz_set_str(p, "68526471339746042131712464873602124202388714266226208884158671408493995491329", 10);
-
+    mpz_set_str(p, temp_p, 10);
+    //mpz_set_ui(p, tab[2]);
     mpz_init(n);
-    mpz_set_str(n, "166578624252013", 10);
-
-    mpz_out_str(stdout, 10, h);
+    mpz_set_str(n, temp_n, 10);
+    //mpz_set_ui(n, tab[3]);
+   /* mpz_out_str(stdout, 10, h);
     printf("\n");
     mpz_out_str(stdout, 10, p);
     printf("\n");
     mpz_out_str(stdout, 10, n);
     printf("\n");
-
+*/
     /*flag = mpz_set_str(g, gs, 10);
     assert(flag == 0);
     flag = mpz_set_str(h, hs, 10); // on transforme les string en int
@@ -165,7 +181,19 @@ int main()
     /*printf("g = ");
     mpz_out_str(stdout,10,g); //to print
     printf ("\n");*/
-
+   /* printf("g = ");
+    mpz_out_str(stdout,10,g); //to print
+    printf ("\n");
+    printf("h = ");
+    mpz_out_str(stdout,10,h); //to print
+    printf ("\n");
+    printf("p = ");
+    mpz_out_str(stdout,10,p); //to print
+    printf ("\n");
+    printf("n = ");
+    mpz_out_str(stdout,10,n); //to print
+    printf ("\n");
+*/
     //fin de l'initialisation des entiers
 
     //debut de la declaration des variables
@@ -271,5 +299,6 @@ int main()
     mpz_clear(n);
     free(list_exp);
     free(list_M);
+    fclose(input);
     return 0;
 }

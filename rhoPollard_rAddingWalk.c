@@ -36,25 +36,58 @@ void f(mpz_t *y, mpz_t *a, mpz_t *b, mpz_t *g, mpz_t *h, mpz_t *q, mpz_t *p,
 }
 
 int main() {
+  
+  
+  char temp_g[1000];
+  char temp_h[1000];
+  char temp_p[1000];
+  char temp_q[1000];
+
+    FILE* input = fopen("input.txt", "r+");
+
+    if(input == NULL){
+        printf("file is NULL\n");
+        exit(EXIT_FAILURE);
+    }
+
+    fscanf(input, "%s %s %s %s", &temp_g,&temp_h,&temp_p,&temp_q);
+  
+  
   /* génerateur g de G */
-  INIT(g,
+  /*INIT(g,
        "39446785437698040340461597167197039958900119517854788257122347157448791"
        "324269")
   /* h tel que l'on cherche log_g(h) */
-  INIT(h,
+  /*INIT(h,
        "47009043480611367617830675310337741057970676588266669887302467688270735"
-       "539171")
+       "539171")*/
   /* l'ordre du grand groupe */
-  INIT(p,
-       "68526471339746042131712464873602124202388714266226208884158671408493995"
+  //INIT(p,
+   /*    "68526471339746042131712464873602124202388714266226208884158671408493995"
        "491329")
   /* ordre du sous-groupe G */
-  INIT(q, "166578624252013")
+  //INIT(q, "166578624252013")
+    mpz_t g; //génerateur G
+    mpz_t h;
+    mpz_t p;
+    mpz_t q; //ordre groupe G
+    mpz_init(g);
+    //mpz_set_ui(g, tab[0]);
+   mpz_set_str(g, temp_g,10);
 
-  PRINT(h)
+    mpz_init(h); // on initialise les entiers a 0
+    //mpz_set_ui(h, 228);
+    mpz_set_str(h, temp_h, 10);
+    //mpz_set_ui(h, tab[1]);
+    mpz_init(p);
+    mpz_set_str(p, temp_p, 10);
+    //mpz_set_ui(p, tab[2]);
+    mpz_init(q);
+    mpz_set_str(q, temp_q, 10);
+ /* PRINT(h)
   PRINT(p)
   PRINT(q)
-
+*/
   // debut de la declaration des variables
   INIT(y, "1")
   INIT(y_even, "1")
@@ -130,6 +163,7 @@ end:
   mpz_clear(b_even);
   mpz_clear(q);
   mpz_clear(r);
+  fclose(input);
 
   return EXIT_SUCCESS;
 }
