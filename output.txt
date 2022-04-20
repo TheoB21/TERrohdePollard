@@ -1,15 +1,30 @@
 Time to Rho 1 times:
 
-real	0m6,224s
-user	0m6,216s
+real	0m6,257s
+user	0m6,250s
 sys	0m0,004s
 Time to rAddingWalk 1 times:
 
-real	0m3,703s
-user	0m3,699s
+real	0m3,705s
+user	0m3,701s
 sys	0m0,000s
 Time to Threads 1 times:
 
-real	0m0,510s
-user	0m10,031s
-sys	0m0,020s
+real	0m0,326s
+user	0m6,384s
+sys	0m0,024s
+Time to Rho 2 times:
+
+real	0m6,213s
+user	0m6,210s
+sys	0m0,000s
+Time to rAddingWalk 2 times:
+
+real	0m3,759s
+user	0m3,752s
+sys	0m0,004s
+Time to Threads 2 times:
+
+real	0m0,514s
+user	0m10,114s
+sys	0m0,024s
