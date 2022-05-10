@@ -1,30 +1,351 @@
 Time to Rho 1 times:
 
-real	0m6,257s
-user	0m6,250s
-sys	0m0,004s
+real	0m0,154s
+user	0m0,151s
+sys	0m0,000s
 Time to rAddingWalk 1 times:
 
-real	0m3,705s
-user	0m3,701s
-sys	0m0,000s
+real	0m0,086s
+user	0m0,079s
+sys	0m0,004s
 Time to Threads 1 times:
 
-real	0m0,326s
-user	0m6,384s
-sys	0m0,024s
+real	0m0,013s
+user	0m0,057s
+sys	0m0,009s
 Time to Rho 2 times:
 
-real	0m6,213s
-user	0m6,210s
+real	0m0,162s
+user	0m0,160s
 sys	0m0,000s
 Time to rAddingWalk 2 times:
 
-real	0m3,759s
-user	0m3,752s
+real	0m0,084s
+user	0m0,072s
+sys	0m0,008s
+Time to Threads 2 times:
+
+real	0m0,017s
+user	0m0,076s
+sys	0m0,000s
+Time to Rho 3 times:
+
+real	0m0,177s
+user	0m0,171s
+sys	0m0,004s
+Time to rAddingWalk 3 times:
+
+real	0m0,063s
+user	0m0,060s
+sys	0m0,000s
+Time to Threads 3 times:
+
+real	0m0,024s
+user	0m0,060s
+sys	0m0,011s
+Time to Rho 4 times:
+
+real	0m0,164s
+user	0m0,160s
+sys	0m0,000s
+Time to rAddingWalk 4 times:
+
+real	0m0,062s
+user	0m0,060s
+sys	0m0,000s
+Time to Threads 4 times:
+
+real	0m0,021s
+user	0m0,097s
+sys	0m0,004s
+Time to Rho 5 times:
+
+real	0m0,164s
+user	0m0,161s
+sys	0m0,000s
+Time to rAddingWalk 5 times:
+
+real	0m0,047s
+user	0m0,044s
+sys	0m0,000s
+Time to Threads 5 times:
+
+real	0m0,030s
+user	0m0,133s
+sys	0m0,004s
+Time to Rho 1 times:
+
+real	0m0,202s
+user	0m0,172s
+sys	0m0,004s
+Time to rAddingWalk 1 times:
+
+real	0m0,047s
+user	0m0,044s
+sys	0m0,000s
+Time to Threads 1 times:
+
+real	0m0,021s
+user	0m0,097s
+sys	0m0,000s
+Time to Rho 2 times:
+
+real	0m0,178s
+user	0m0,175s
+sys	0m0,000s
+Time to rAddingWalk 2 times:
+
+real	0m0,045s
+user	0m0,043s
+sys	0m0,000s
+Time to Threads 2 times:
+
+real	0m0,022s
+user	0m0,112s
+sys	0m0,000s
+Time to Rho 3 times:
+
+real	0m0,158s
+user	0m0,153s
+sys	0m0,000s
+Time to rAddingWalk 3 times:
+
+real	0m0,044s
+user	0m0,042s
+sys	0m0,000s
+Time to Threads 3 times:
+
+real	0m0,016s
+user	0m0,047s
+sys	0m0,004s
+Time to Rho 4 times:
+
+real	0m0,181s
+user	0m0,170s
+sys	0m0,008s
+Time to rAddingWalk 4 times:
+
+real	0m0,101s
+user	0m0,099s
+sys	0m0,000s
+Time to Threads 4 times:
+
+real	0m0,017s
+user	0m0,082s
+sys	0m0,000s
+Time to Rho 5 times:
+
+real	0m0,159s
+user	0m0,156s
+sys	0m0,000s
+Time to rAddingWalk 5 times:
+
+real	0m0,102s
+user	0m0,096s
+sys	0m0,004s
+Time to Threads 5 times:
+
+real	0m0,021s
+user	0m0,093s
+sys	0m0,004s
+Time to Rho 1 times:
+
+real	0m0,645s
+user	0m0,639s
+sys	0m0,004s
+Time to rAddingWalk 1 times:
+
+real	0m0,131s
+user	0m0,124s
+sys	0m0,000s
+Time to Threads 1 times:
+
+real	0m0,122s
+user	0m0,755s
+sys	0m0,004s
+Time to Rho 2 times:
+
+real	0m0,643s
+user	0m0,635s
+sys	0m0,000s
+Time to rAddingWalk 2 times:
+
+real	0m0,227s
+user	0m0,220s
 sys	0m0,004s
 Time to Threads 2 times:
 
-real	0m0,514s
-user	0m10,114s
+real	0m0,072s
+user	0m0,462s
+sys	0m0,000s
+Time to Rho 3 times:
+
+real	0m0,619s
+user	0m0,617s
+sys	0m0,000s
+Time to rAddingWalk 3 times:
+
+real	0m0,545s
+user	0m0,542s
+sys	0m0,000s
+Time to Threads 3 times:
+
+real	0m0,046s
+user	0m0,234s
+sys	0m0,000s
+Time to Rho 4 times:
+
+real	0m0,628s
+user	0m0,626s
+sys	0m0,000s
+Time to rAddingWalk 4 times:
+
+real	0m0,269s
+user	0m0,262s
+sys	0m0,000s
+Time to Threads 4 times:
+
+real	0m0,041s
+user	0m0,233s
+sys	0m0,000s
+Time to Rho 5 times:
+
+real	0m0,627s
+user	0m0,620s
+sys	0m0,004s
+Time to rAddingWalk 5 times:
+
+real	0m0,281s
+user	0m0,278s
+sys	0m0,000s
+Time to Threads 5 times:
+
+real	0m0,029s
+user	0m0,148s
+sys	0m0,012s
+Time to Rho 1 times:
+
+real	0m2,017s
+user	0m2,014s
+sys	0m0,000s
+Time to rAddingWalk 1 times:
+
+real	0m1,323s
+user	0m1,305s
+sys	0m0,016s
+Time to Threads 1 times:
+
+real	0m0,698s
+user	0m4,595s
+sys	0m0,040s
+Time to Rho 2 times:
+
+real	0m2,018s
+user	0m2,015s
+sys	0m0,000s
+Time to rAddingWalk 2 times:
+
+real	0m2,411s
+user	0m2,380s
 sys	0m0,024s
+Time to Threads 2 times:
+
+real	0m0,399s
+user	0m2,662s
+sys	0m0,032s
+Time to Rho 3 times:
+
+real	0m2,100s
+user	0m2,096s
+sys	0m0,000s
+Time to rAddingWalk 3 times:
+
+real	0m2,014s
+user	0m2,011s
+sys	0m0,000s
+Time to Threads 3 times:
+
+real	0m0,227s
+user	0m1,519s
+sys	0m0,020s
+Time to Rho 4 times:
+
+real	0m1,992s
+user	0m1,985s
+sys	0m0,000s
+Time to rAddingWalk 4 times:
+
+real	0m1,622s
+user	0m1,620s
+sys	0m0,000s
+Time to Threads 4 times:
+
+real	0m0,419s
+user	0m2,814s
+sys	0m0,016s
+Time to Rho 5 times:
+
+real	0m1,967s
+user	0m1,965s
+sys	0m0,000s
+Time to rAddingWalk 5 times:
+
+real	0m1,603s
+user	0m1,568s
+sys	0m0,032s
+Time to Threads 5 times:
+
+real	0m0,496s
+user	0m3,221s
+sys	0m0,020s
+Time to Rho 1 times:
+
+real	0m2,649s
+user	0m2,646s
+sys	0m0,000s
+Time to rAddingWalk 1 times:
+
+real	0m9,659s
+user	0m9,656s
+sys	0m0,000s
+Time to Threads 1 times:
+
+real	0m1,857s
+user	0m12,259s
+sys	0m0,164s
+Time to Rho 2 times:
+
+real	0m2,624s
+user	0m2,618s
+sys	0m0,000s
+Time to rAddingWalk 2 times:
+
+real	0m4,041s
+user	0m4,005s
+sys	0m0,028s
+Time to Threads 2 times:
+
+real	0m4,110s
+user	0m27,212s
+sys	0m0,268s
+Time to Rho 3 times:
+
+real	0m2,638s
+user	0m2,635s
+sys	0m0,000s
+Time to rAddingWalk 3 times:
+
+real	0m9,507s
+user	0m9,500s
+sys	0m0,000s
+Time to Threads 3 times:
+
+real	0m4,336s
+user	0m29,598s
+sys	0m0,340s
+Time to Rho 4 times:
+
+real	0m2,611s
+user	0m2,607s
+sys	0m0,000s
+Time to rAddingWalk 4 times:

@@ -11,9 +11,9 @@
 
 #include "set.h"
 
-#define SIZE_P 256
+#define SIZE_P 1024
 #define N 24
-#define SIZE_DISTINGUE 239
+#define SIZE_DISTINGUE 1017
 // en moyenne on stock (cst*sqrt(q))/2^x élement dans ta la table ou
 //(x= Nb de bit de p -size distingué)
 // Car theta, la proprotion de distingué qu'on sotck
@@ -181,6 +181,7 @@ int main(int argc, char *argv[])
     /* generation des ms et ns de façon aléatoire */
     gmp_randstate_t state;
     gmp_randinit_mt(state);
+    gmp_randseed_ui(state,time(NULL)); 
     mpz_t g_init;
     mpz_t h_init;
     INIT(g_init, "0")
@@ -199,6 +200,7 @@ int main(int argc, char *argv[])
                sharedStruct.p);
       mpz_init(sharedStruct.listM[i]);
       mpz_mul(sharedStruct.listM[i], g_init, h_init);
+      mpz_mod(sharedStruct.listM[i],sharedStruct.listM[i],sharedStruct.p);
     }
     
     mpz_clear(g_init);
@@ -241,8 +243,8 @@ int main(int argc, char *argv[])
       pthread_cancel(tid[i]);
     }
 
-    /*printf("HEIGHT OF THE TREE : %d | NB OF ELEMENT ADDED : %d\n",
-           sharedStruct.set->height, cpt);*/
+    printf("HEIGHT OF THE TREE : %d | NB OF ELEMENT ADDED : %d\n",
+           sharedStruct.set->height, cpt);
 
     /* Extraction du resultat , on veut : (a_even-a)(b-b_even)^(-1) (mod q)  */
     mpz_t r;

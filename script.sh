@@ -5,7 +5,7 @@
 > output.txt # clear the file
 > input.txt
 
-j=1
+j=0
 while [ $j -lt $1 ] ; do
     
     ./changeInput $j
@@ -13,15 +13,16 @@ while [ $j -lt $1 ] ; do
     i=0
     while [ $i -lt $2 ] ; do
         i=$[$i+1]
-        echo Time to Rho $i times: >> output.txt
-        echo -n >> output.txt
-        { time ./TER2 ; } 2>> output.txt
-        echo -n >> output.txt
+       echo Time to Rho $i times: >> output.txt
+       echo -n >> output.txt
+       { time ./TER2 ; } 2>> output.txt
+       
+       echo -n >> output.txt
         
-        echo Time to rAddingWalk  $i times: >> output.txt
-        echo -n >> output.txt
-        { time ./rhoPollard_rAddingWalk ; } 2>> output.txt
-        echo -n >> output.txt
+       echo Time to rAddingWalk  $i times: >> output.txt
+       echo -n >> output.txt
+       { time ./rhoPollard_rAddingWalk ; } 2>> output.txt
+       echo -n >> output.txt
         
         echo Time to Threads $i times: >> output.txt
         echo -n >> output.txt

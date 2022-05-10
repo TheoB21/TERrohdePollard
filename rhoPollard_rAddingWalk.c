@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define N 15
+#define N 20
 
 #define INIT(name, value) \
   mpz_t name;             \
@@ -18,13 +18,15 @@
   mpz_out_str(stdout, 10, var); \
   printf("\n");
 
-typedef struct {
+typedef struct
+{
   mpz_t m; /*exposant de  g*/
   mpz_t n; /*exposant de  h*/
 } couple;
 
 void f(mpz_t *y, mpz_t *a, mpz_t *b, mpz_t *g, mpz_t *h, mpz_t *q, mpz_t *p,
-       couple *listExposant, mpz_t *listM) {
+       couple *listExposant, mpz_t *listM)
+{
   /* on génère une partition de l'ensemble en N cas */
   unsigned long int s = mpz_fdiv_ui(*y, N);
   mpz_add(*b, *b, listExposant[s].n);
@@ -35,24 +37,24 @@ void f(mpz_t *y, mpz_t *a, mpz_t *b, mpz_t *g, mpz_t *h, mpz_t *q, mpz_t *p,
   mpz_mod(*y, *y, *p);
 }
 
-int main() {
-  
-  
+int main()
+{
+
   char temp_g[1000];
   char temp_h[1000];
   char temp_p[1000];
   char temp_q[1000];
 
-    FILE* input = fopen("input.txt", "r+");
+  FILE *input = fopen("input.txt", "r+");
 
-    if(input == NULL){
-        printf("file is NULL\n");
-        exit(EXIT_FAILURE);
-    }
+  if (input == NULL)
+  {
+    printf("file is NULL\n");
+    exit(EXIT_FAILURE);
+  }
 
-    fscanf(input, "%s %s %s %s", &temp_g,&temp_h,&temp_p,&temp_q);
-  
-  
+  fscanf(input, "%s %s %s %s", &temp_g, &temp_h, &temp_p, &temp_q);
+
   /* génerateur g de G */
   /*INIT(g,
        "39446785437698040340461597167197039958900119517854788257122347157448791"
@@ -62,32 +64,32 @@ int main() {
        "47009043480611367617830675310337741057970676588266669887302467688270735"
        "539171")*/
   /* l'ordre du grand groupe */
-  //INIT(p,
-   /*    "68526471339746042131712464873602124202388714266226208884158671408493995"
-       "491329")
-  /* ordre du sous-groupe G */
-  //INIT(q, "166578624252013")
-    mpz_t g; //génerateur G
-    mpz_t h;
-    mpz_t p;
-    mpz_t q; //ordre groupe G
-    mpz_init(g);
-    //mpz_set_ui(g, tab[0]);
-   mpz_set_str(g, temp_g,10);
+  // INIT(p,
+  /*    "68526471339746042131712464873602124202388714266226208884158671408493995"
+      "491329")
+ /* ordre du sous-groupe G */
+  // INIT(q, "166578624252013")
+  mpz_t g; // génerateur G
+  mpz_t h;
+  mpz_t p;
+  mpz_t q; // ordre groupe G
+  mpz_init(g);
+  // mpz_set_ui(g, tab[0]);
+  mpz_set_str(g, temp_g, 10);
 
-    mpz_init(h); // on initialise les entiers a 0
-    //mpz_set_ui(h, 228);
-    mpz_set_str(h, temp_h, 10);
-    //mpz_set_ui(h, tab[1]);
-    mpz_init(p);
-    mpz_set_str(p, temp_p, 10);
-    //mpz_set_ui(p, tab[2]);
-    mpz_init(q);
-    mpz_set_str(q, temp_q, 10);
- /* PRINT(h)
-  PRINT(p)
-  PRINT(q)
-*/
+  mpz_init(h); // on initialise les entiers a 0
+  // mpz_set_ui(h, 228);
+  mpz_set_str(h, temp_h, 10);
+  // mpz_set_ui(h, tab[1]);
+  mpz_init(p);
+  mpz_set_str(p, temp_p, 10);
+  // mpz_set_ui(p, tab[2]);
+  mpz_init(q);
+  mpz_set_str(q, temp_q, 10);
+  /* PRINT(h)
+   PRINT(p)
+   PRINT(q)
+ */
   // debut de la declaration des variables
   INIT(y, "1")
   INIT(y_even, "1")
@@ -100,13 +102,15 @@ int main() {
   /* generation des ms et ns de façon aléatoire */
 
   gmp_randstate_t state;
-  gmp_randinit_default(state);
+  gmp_randinit_mt(state);
+  gmp_randseed_ui(state, time(NULL));
   couple listExposant[N]; /* from 0 to N-1: c'est un N-adding walk */
   mpz_t listM[N];
   INIT(g_init, "0")
   INIT(h_init, "0")
 
-  for (int i = 0; i < N; i++) {
+  for (int i = 0; i < N; i++)
+  {
     mpz_init(listExposant[i].m);
     mpz_urandomm(listExposant[i].m, state, q); /* defined mod q */
     mpz_init(listExposant[i].n);
@@ -115,13 +119,15 @@ int main() {
     mpz_powm(h_init, h, listExposant[i].n, p);
     mpz_init(listM[i]);
     mpz_mul(listM[i], g_init, h_init);
+    mpz_mod(listM[i],listM[i],p);
   }
   mpz_clear(g_init);
   mpz_clear(h_init);
   gmp_randclear(state);
 
   /* application de la fonction tant qu'il n'y a pas de collision */
-  do {
+  do
+  {
     f(&y, &a, &b, &g, &h, &q, &p, listExposant, listM);
     f(&y_even, &a_even, &b_even, &g, &h, &q, &p, listExposant, listM);
     f(&y_even, &a_even, &b_even, &g, &h, &q, &p, listExposant, listM);
@@ -132,7 +138,8 @@ int main() {
   mpz_mod(r, r, q);      /* r = (b - b_even) (mod q) */
 
   /* test si (b - b_even) est inversible (mod q) */
-  if (mpz_cmp_si(r, 0) == 0) {
+  if (mpz_cmp_si(r, 0) == 0)
+  {
     printf("ECHEC \n");
     goto end;
   }
@@ -147,7 +154,8 @@ int main() {
 
   /* liberation de la mémoire */
 end:
-  for (int i = 0; i < N; i++) {
+  for (int i = 0; i < N; i++)
+  {
     mpz_clear(listExposant[i].m);
     mpz_clear(listExposant[i].n);
     mpz_clear(listM[i]);
