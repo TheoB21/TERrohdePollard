@@ -240,7 +240,6 @@ int main(int argc, char *argv[])
         printf ("Y_EVEN = ");
         mpz_out_str(stdout,10,Y_EVEN);
         printf("\n");
-
         printf("FIN \n");*/
 
         // application de la fonction f_roh
