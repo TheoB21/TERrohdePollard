@@ -8,6 +8,7 @@ all: $(PROGS)
 
 mainTestSet : set.o
 rhoPollard_Threads : set.o
+rhoPollard_tagTracing : set.o tagTracing.o
 
 .PHONY: clean
 clean:
